@@ -27,10 +27,17 @@ $(".toggle-password").click(function() {
     var importloginURL = `https://${importInstanceVal}/${api}/${loginEndpoint}` 
     var importURL = `https://${importInstanceVal}/${api}/${importEndpoint}` 
 
-    var authData = new Object();
-    authData.username_or_email = exportUsernameVal;
-    authData.password = exportPasswordFieldVal;
-    var jsonAuthData = JSON.stringify(authData);
+    var exportAuthData = new Object();
+    exportAuthData.username_or_email = exportUsernameVal;
+    exportAuthData.password = exportPasswordFieldVal;
+    var jsonExportAuthData = JSON.stringify(exportAuthData);
+
+    var importAuthData = new Object();
+    importAuthData.username_or_email = importUsernameVal;
+    importAuthData.password = importPasswordFieldVal;
+    var jsonImportAuthData = JSON.stringify(importAuthData);
+
+    
 
     
     var authResponse = null;
@@ -39,11 +46,11 @@ $(".toggle-password").click(function() {
         type: "POST",
         dataType: "json",
         url: exportloginURL,
-        data: jsonAuthData,
+        data: jsonExportAuthData,
         contentType: "application/json; charset=utf-8",
         success: function(result){
             var exportJWT = result.jwt;
-            console.log("Export JWT: " + exportJWT);
+            //console.log("Export JWT: " + exportJWT);
             appendToLogField("success", `Successfully got authentication from ${exportUsernameVal}@${exportInstanceVal}.`);
             $.ajax({
                 url: exportURL,
@@ -58,11 +65,11 @@ $(".toggle-password").click(function() {
                         type: "POST",
                         dataType: "json",
                         url: importloginURL,
-                        data: jsonAuthData,
+                        data: jsonImportAuthData,
                         contentType: "application/json; charset=utf-8",
                         success: function(result){
                             var importJWT = result.jwt;
-                            console.log("Import JWT: " + importJWT);
+                            //console.log("Import JWT: " + importJWT);
                             appendToLogField("success", `Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
                             $.ajax({
                                 type: "POST",
