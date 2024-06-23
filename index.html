@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Lemmy Instance mover </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="StableNarwhal" />
+    <!-- Bootstrap CSS -->
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+    <!-- Font Awesome CSS -->
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="css/style.css">
+    
+	
+</head>
+<body>
+    <h1>Lemmy Instance Mover</h1>
+    <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
+        
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <p>Instance to export settings from:</p>
+                <form class="form-horizontal" method="" action="">
+        
+                  <div class="form-group">
+                    <label class="col-md-4 control-label">Lemmy instance</label>
+                    <div class="col-md-6">
+                      <input type="url" class="form-control" name="exportInstance" value="feddit.de">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label">Username</label>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" name="exportUsername" value="">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label">Password</label>
+                    <div class="col-md-6">
+                      <input id="exportPasswordField" type="password" class="form-control" name="exportPasswordField" value="">
+                      <span toggle="#exportPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
+        
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <p>Instance to import settings to:</p>
+                <form class="form-horizontal" method="" action="">
+        
+                  <div class="form-group">
+                    <label class="col-md-4 control-label">Lemmy instance</label>
+                    <div class="col-md-6">
+                      <input type="url" class="form-control" name="importInstance" value="feddit.org">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label">Username</label>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" name="importUsername" value="">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label">Password</label>
+                    <div class="col-md-6">
+                      <input id="importPasswordField" type="password" class="form-control" name="importPasswordField" value="">
+                      <span toggle="#importPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <input type="button" value="Transfer account settings" id="MyButton">
+    <br>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+      
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <p>Log:</p>
+              <div id="logField" class="col-md-8 col-md-offset-2">          
+              </div>
+            </div>
+          </div>
+          <br>
+          <i>The use of this freely accessible web application is at your own risk. A guarantee or liability of any kind is expressly excluded. ~StableNarwhal</i>
+        </div>
+    
+    
+
+     <!-- Scripts: -->
+     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+     <script src="js/script.js"></script>
+
+    
+    
+
+
+
+</body>
+</html>
