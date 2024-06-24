@@ -9,10 +9,11 @@ $(".toggle-password").click(function() {
   }); 
 
   $('#MyButton').click(function (e) {
-    var exportInstanceVal = $("[name='exportInstance']").val();
+    var exportInstanceVal = $("[name='exportInstance']").val().replace(/^https?\:\/\//i, "");
     var exportUsernameVal = $("[name='exportUsername']").val();
     var exportPasswordFieldVal = $("[name='exportPasswordField']").val();
-    var importInstanceVal = $("[name='importInstance']").val();
+
+    var importInstanceVal = $("[name='importInstance']").val().replace(/^https?\:\/\//i, "");
     var importUsernameVal = $("[name='importUsername']").val();
     var importPasswordFieldVal = $("[name='importPasswordField']").val();
 
@@ -37,45 +38,43 @@ $(".toggle-password").click(function() {
     importAuthData.password = importPasswordFieldVal;
     var jsonImportAuthData = JSON.stringify(importAuthData);
 
-    
-
-    
-    var authResponse = null;
+    var exportedUserDataJSON = null;
 
     $.ajax({
         type: "POST",
-        dataType: "json",
+        //dataType: "json",
         url: exportloginURL,
         data: jsonExportAuthData,
-        contentType: "application/json; charset=utf-8",
+        contentType: "application/json",
         success: function(result){
             var exportJWT = result.jwt;
-            //console.log("Export JWT: " + exportJWT);
+            console.log("Export JWT: " + exportJWT);
             appendToLogField("success", `Successfully got authentication from ${exportUsernameVal}@${exportInstanceVal}.`);
             $.ajax({
                 url: exportURL,
                 headers: {'Authorization': `Bearer ${exportJWT}`},
-                dataType: "json",
+                //dataType: "json",
                 success: function(result){
-                    var exportedUserDataJSON = JSON.stringify(result);
+                    exportedUserDataJSON = JSON.stringify(result);
                     //console.log(`Exported user data from ${exportUsernameVal}@${exportInstanceVal}:`);
                     appendToLogField("success", `Successfully exported user data from ${exportUsernameVal}@${exportInstanceVal}.`);
-                    //console.log(exportedUserDataJSON);
+                    console.log(exportedUserDataJSON);
                     $.ajax({
                         type: "POST",
-                        dataType: "json",
+                        //dataType: "json",
                         url: importloginURL,
                         data: jsonImportAuthData,
-                        contentType: "application/json; charset=utf-8",
+                        contentType: "application/json",
                         success: function(result){
                             var importJWT = result.jwt;
-                            //console.log("Import JWT: " + importJWT);
+                            console.log("Import JWT: " + importJWT);
                             appendToLogField("success", `Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
                             $.ajax({
                                 type: "POST",
                                 url: importURL,
                                 headers: {'Authorization': `Bearer ${importJWT}`},
-                                dataType: "json",
+                                contentType: "application/json",
+                                //dataType: "json",
                                 data: exportedUserDataJSON,
                                 success: function(result){
                                     appendToLogField("success", `Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
