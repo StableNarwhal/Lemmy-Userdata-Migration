@@ -17,113 +17,126 @@
      <h1>Lemmy Instance Mover</h1>
      <div class="row">
       <div class="col-md-8 col-md-offset-2">
-    
         <div class="panel panel-default">
           <div class="panel-body">
             <p>⚠️ Attention: Due to CORS shenanigans your browser or a misconfigured instance may not permit some of the requests this web applications sends. If you get an error in the log, try a different browser or a (temporarily) more relaxed security setting. There isn't anything I can do about it on my end without giving up the 100% clientside approach, unfortunately. The error logs are currently very generic, I'll design those to be more informative as soon as I find the time. In the meantime, you can always check the console log (F12) to find out more about request errors.</p>         
             </div>
           </div>
         </div>
-      </div>
+     </div>
   </div>  
-    <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-        
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+          <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-body">
-                <p>Instance to export settings from:</p>
-                <form class="form-horizontal" method="" action="">
-        
-                  <div class="form-group">
-                    <label class="col-md-4 control-label">Lemmy instance</label>
-                    <div class="col-md-6">
-                      <input type="url" class="form-control" name="exportInstance" value="feddit.de">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-4 control-label">Username</label>
-                    <div class="col-md-6">
-                      <input type="text" class="form-control" name="exportUsername" value="">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-4 control-label">Password</label>
-                    <div class="col-md-6">
-                      <input id="exportPasswordField" type="password" class="form-control" name="exportPasswordField" value="">
-                      <span toggle="#exportPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-                    </div>
-                  </div>
-                </form>
+                <h4>What this actually does:</h4> 
+                <p>1. Input your instances, usernames and passwords.</p> 
+                <p>2. The clientside JavaScript code processes your inputs locally and tries to grab a special token using your provided export instance, username and password.</p>
+                <p>3. If the export token can be grabbed, it gets used to authenticate a request to grab your user data from your export instance.</p>   
+                <p>4. If the userdata export was successful, another special token is attempted to be grabbed, this time from your provided import instance.</p>  
+                <p>5. If the import token can be grabbed, another request to upload your user data to your import instance is attempted.</p>
+                <strong>At this point, if the log is all green, the process is complete. You can safely close the window, your sensitive input and local user data gets deleted.</strong>
               </div>
-            </div>
           </div>
-        </div>
-    </div>
-
-    <img src="images/greenArrow-pointingDown.png" class="resize">
-
-    <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-        
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <p>Instance to import settings to:</p>
-                <form class="form-horizontal" method="" action="">
-        
-                  <div class="form-group">
-                    <label class="col-md-4 control-label">Lemmy instance</label>
-                    <div class="col-md-6">
-                      <input type="url" class="form-control" name="importInstance" value="feddit.org">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-4 control-label">Username</label>
-                    <div class="col-md-6">
-                      <input type="text" class="form-control" name="importUsername" value="">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-4 control-label">Password</label>
-                    <div class="col-md-6">
-                      <input id="importPasswordField" type="password" class="form-control" name="importPasswordField" value="">
-                      <span toggle="#importPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
-
-    <input type="button" value="Transfer account settings" id="MyButton">
-    <br>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-      
           <div class="panel panel-default">
             <div class="panel-body">
-              <p>Log:</p>
-              <div id="logField" class="col-md-8 col-md-offset-2">          
+              <small>The use of this freely accessible web application is at your own risk. A guarantee or liability of any kind is expressly excluded. <br>
+                The application runs completely clientside, no data is collected by me and no cookies are set by me. <br>However, jquery 2.2.2, bootstrap 3.3.6 and font-awesome 4.5.0 are imported via a CDN.<br>
+                Also, due to this web application being hosted on GitHub, I have no control over what data, e.g. IP and browser fingerprint, may or may not be logged by GitHub. <br>
+                Your entered username(s), password(s) and user data is processed locally in your browser and uploaded, by your browser, to the userspecified Lemmy instances.<br> 
+                Due to the code running locally in your browser, passwords are temporarily saved and processed in cleartext by your browser.</small>
+                
+              <strong>~StableNarwhal</strong>       
+            </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <p>Instance to export settings from:</p>
+            <form class="form-horizontal" method="" action="">
+              <div class="form-group">
+                <label class="col-md-4 control-label">Lemmy instance</label>
+                <div class="col-md-6">
+                  <input type="url" class="form-control" name="exportInstance" value="feddit.de">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-4 control-label">Username</label>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" name="exportUsername" value="">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-4 control-label">Password</label>
+                <div class="col-md-6">
+                  <input id="exportPasswordField" type="password" class="form-control" name="exportPasswordField" value="">
+                  <span toggle="#exportPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                </div>
+              </div>
+            </form>
+          </div>
+      </div>
+      <img src="images/greenArrow-pointingDown.png" class="resize">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>Instance to import settings to:</p>
+          <form class="form-horizontal" method="" action="">
+            <div class="form-group">
+              <label class="col-md-4 control-label">Lemmy instance</label>
+              <div class="col-md-6">
+                <input type="url" class="form-control" name="importInstance" value="feddit.org">
               </div>
             </div>
-          </div>
-          <br>
-          <i>The use of this freely accessible web application is at your own risk. A guarantee or liability of any kind is expressly excluded.
-            The application runs completely clientside, no data is collected by me and no cookies are set by me. However, jquery 2.2.2, bootstrap 3.3.6 and font-awesome 4.5.0 are imported via a CDN. 
-            Also, due to this web application being hosted on GitHub, I have no control over what data, e.g. IP and browser fingerprint, may or may not be logged by GitHub. 
-            Your entered username(s), password(s) and user data is processed locally in your browser and uploaded, by your browser, to the userspecified Lemmy instances. 
-            Due to the code running locally in your browser, passwords are temporarily saved and processed in cleartext by your browser.
-            
-            ~StableNarwhal</i>
-          <br>
-          <br>
-          <br>
-          <br>
+            <div class="form-group">
+              <label class="col-md-4 control-label">Username</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="importUsername" value="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4 control-label">Password</label>
+              <div class="col-md-6">
+                <input id="importPasswordField" type="password" class="form-control" name="importPasswordField" value="">
+                <span toggle="#importPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+              </div>
+            </div>
+          </form>
         </div>
-    </div>  
+    </div>
+    <input type="button" value="Transfer account settings" id="MyButton">
+    <br>
+    </div>
+    </div>
+  </div>      
+
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+  
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>Log:</p>
+          <div id="logField" class="col-md-8 col-md-offset-2">          
+          </div>
+        </div>
+      </div>
+
+
+      <br>
+      <i></i>
+      <br>
+      <br>
+      <br>
+      <br>
+    </div>
+</div>  
+</div>
+  
+
+
+  
     <ul>
       <li><a href="https://docs.github.com/en/site-policy">GitHub Site policy</a></li>
       <li><a href="privacy.txt">Privacy policy</a></li>
