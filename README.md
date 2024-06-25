@@ -1,10 +1,12 @@
 
 # Lemmy Instance Mover
 
-This little web application allows you to transfer your user data from one Lemmy instance to another. 
+This web application exports your user data (community follows, blocklists, profile settings) and (optionally) imports them to the target account.
 
 
-**What this actually does:**
+**How this works:**
+
+
 
 1. Input your instances, usernames and passwords.
 
@@ -18,5 +20,4 @@ This little web application allows you to transfer your user data from one Lemmy
 
 **At this point, if the log is all green, the process is complete. You can safely close the window, your sensitive input and local user data gets deleted.**
 
-
-![overview](https://github.com/StableNarwhal/LemmyInstanceMover/assets/14216536/b92ca16f-d70c-43f3-81c3-9fd1553280fe)
+![overview_compact](https://github.com/StableNarwhal/LemmyInstanceMover/assets/14216536/7f2fcf24-cd34-48d1-be74-5957b024962c)
