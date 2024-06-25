@@ -8,6 +8,24 @@ $(".toggle-password").click(function() {
     }
   }); 
 
+var transferOrDownload = 0;
+
+$('#dataDownload').click(function(){
+    if ($('#dataDownload').is(":checked"))
+        {
+            $("#MyButton").prop('value', 'Download user data');
+            $('#importFields').hide();
+            $('#arrow').hide();
+            transferOrDownload = 1;
+        }
+    else {
+            $("#MyButton").prop('value', 'Transfer account settings');
+            $('#importFields').show();
+            $('#arrow').show();
+            transferOrDownload = 0;
+        }
+});
+
   $('#MyButton').click(function (e) {
     var exportInstanceVal = $("[name='exportInstance']").val().replace(/^https?\:\/\//i, "");
     var exportUsernameVal = $("[name='exportUsername']").val();
@@ -59,39 +77,52 @@ $(".toggle-password").click(function() {
                     //console.log(`Exported user data from ${exportUsernameVal}@${exportInstanceVal}:`);
                     appendToLogField("success", `Successfully exported user data from ${exportUsernameVal}@${exportInstanceVal}.`);
                     console.log(exportedUserDataJSON);
-                    $.ajax({
-                        type: "POST",
-                        //dataType: "json",
-                        url: importloginURL,
-                        data: jsonImportAuthData,
-                        contentType: "application/json",
-                        success: function(result){
-                            var importJWT = result.jwt;
-                            console.log("Import JWT: " + importJWT);
-                            appendToLogField("success", `Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
-                            $.ajax({
-                                type: "POST",
-                                url: importURL,
-                                headers: {'Authorization': `Bearer ${importJWT}`},
-                                contentType: "application/json",
-                                //dataType: "json",
-                                data: exportedUserDataJSON,
-                                success: function(result){
-                                    appendToLogField("success", `Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
-                                    appendToLogField("success", 'Operations complete. Enjoy!');
-                                    
-                
-                                },
-                                error: function(xhr, textStatus, errorThrown) { 
-                                    appendToLogField("error", `Couldn't import user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText); 
-                                } 
-                            });
-                        },
-                        error: function(xhr, textStatus, errorThrown) { 
-                            appendToLogField("error", `Couldn't authenticate to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText);
-                        }       
-                    });
-
+                    if (transferOrDownload == 1) {
+                        exportedUserDataJSONblobby = [exportedUserDataJSON];
+                        var blob1 = new Blob(exportedUserDataJSONblobby, { type: "text/plain;charset=utf-8" });
+                        var url = window.URL || window.webkitURL;
+                        link = url.createObjectURL(blob1);
+                        var a = $("<a />");
+                        a.attr("download", `${exportUsernameVal}@${exportInstanceVal}.json`);
+                        a.attr("href", link);
+                        $("body").append(a);
+                        a[0].click();
+                        $("body").remove(a);
+                        appendToLogField("success", 'Operations complete. Enjoy!');
+                    } else {
+                        $.ajax({
+                            type: "POST",
+                            //dataType: "json",
+                            url: importloginURL,
+                            data: jsonImportAuthData,
+                            contentType: "application/json",
+                            success: function(result){
+                                var importJWT = result.jwt;
+                                console.log("Import JWT: " + importJWT);
+                                appendToLogField("success", `Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
+                                $.ajax({
+                                    type: "POST",
+                                    url: importURL,
+                                    headers: {'Authorization': `Bearer ${importJWT}`},
+                                    contentType: "application/json",
+                                    //dataType: "json",
+                                    data: exportedUserDataJSON,
+                                    success: function(result){
+                                        appendToLogField("success", `Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
+                                        appendToLogField("success", 'Operations complete. Enjoy!');
+                                        
+                    
+                                    },
+                                    error: function(xhr, textStatus, errorThrown) { 
+                                        appendToLogField("error", `Couldn't import user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText); 
+                                    } 
+                                });
+                            },
+                            error: function(xhr, textStatus, errorThrown) { 
+                                appendToLogField("error", `Couldn't authenticate to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText);
+                            }       
+                        });
+                    }
                 },
                 error: function(xhr, textStatus, errorThrown) { 
                     appendToLogField("error", `Couldn't export user data from ${exportUsernameVal}@${exportInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText); 
