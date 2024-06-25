@@ -8,7 +8,7 @@ This web application exports your user data (community follows, blocklists, prof
 
 
 
-1. Input your instances, usernames and passwords and optionally 2FA-Tokens.
+1. Input your instance(s), username(s), password(s) and optionally 2FA-Token(s)
 
 2. The clientside JavaScript code processes your inputs locally and tries to grab a special token using your provided export instance, username and password.
 
