@@ -46,15 +46,30 @@ $('#dataDownload').click(function(){
     var importloginURL = `https://${importInstanceVal}/${api}/${loginEndpoint}` 
     var importURL = `https://${importInstanceVal}/${api}/${importEndpoint}` 
 
+
     var exportAuthData = new Object();
     exportAuthData.username_or_email = exportUsernameVal;
     exportAuthData.password = exportPasswordFieldVal;
-    var jsonExportAuthData = JSON.stringify(exportAuthData);
+
+    if(!$.trim($("[name='export2FA']").value).length) {
+        var jsonExportAuthData = JSON.stringify(exportAuthData);
+    } else {
+        exportAuthData.totp_2fa_token = $("[name='export2FA']").val();
+        var jsonExportAuthData = JSON.stringify(exportAuthData);
+    }
+
+    
 
     var importAuthData = new Object();
     importAuthData.username_or_email = importUsernameVal;
     importAuthData.password = importPasswordFieldVal;
-    var jsonImportAuthData = JSON.stringify(importAuthData);
+
+    if(!$.trim($("[name='import2FA']").value).length) {
+        var jsonImportAuthData = JSON.stringify(importAuthData);
+    } else {
+        exportAuthData.totp_2fa_token = $("[name='import2FA']").val();
+        var jsonImportAuthData = JSON.stringify(importAuthData);
+    }
 
     var exportedUserDataJSON = null;
 

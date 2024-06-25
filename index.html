@@ -75,6 +75,12 @@
                 <div class="col-md-6">
                   <input id="exportPasswordField" type="password" class="form-control" name="exportPasswordField" value="">
                   <span toggle="#exportPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                </div>            
+              </div>
+              <div class="form-group">
+                <label class="col-md-4 control-label">2FA-Token (optional)</label>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" name="export2FA" value="">
                   <br>
                   <input type="checkbox" id="dataDownload" name="dataDownload">
                   <label for="dataDownload"> Only download user data</label>
@@ -106,7 +112,13 @@
               <label class="col-md-4 control-label">Password</label>
               <div class="col-md-6">
                 <input id="importPasswordField" type="password" class="form-control" name="importPasswordField" value="">
-                <span toggle="#importPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                <span toggle="#importPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>    
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4 control-label">2FA-Token (optional)</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="import2FA" value="">
               </div>
             </div>
           </form>
