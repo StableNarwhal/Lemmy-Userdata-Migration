@@ -1,3 +1,11 @@
+
+$( document ).ready(function() {
+    $('#editorDiv').hide();
+    $('#firstArrow').hide();
+    $('#submitEditor').hide();
+
+});
+
 $(".toggle-password").click(function() {    
     $(this).toggleClass("fa-eye fa-eye-slash");
     var input = $($(this).attr("toggle"));
@@ -8,25 +16,43 @@ $(".toggle-password").click(function() {
     }
   }); 
 
-var transferOrDownload = 0;
+var transferOrDownload = 'transfer';
 
 $('#dataDownload').click(function(){
     if ($('#dataDownload').is(":checked"))
         {
             $("#MyButton").prop('value', 'Download user data');
             $('#importFields').hide();
-            $('#arrow').hide();
-            transferOrDownload = 1;
+            $('#secondArrow').hide();
+            transferOrDownload = 'download';
         }
     else {
             $("#MyButton").prop('value', 'Transfer account settings');
             $('#importFields').show();
-            $('#arrow').show();
-            transferOrDownload = 0;
+            $('#secondArrow').show();
+            transferOrDownload = 'transfer';
+    }
+});
+
+var modifyJSON = false;
+
+$('#modifyJSON').click(function(){
+    if ($('#modifyJSON').is(":checked"))
+        {
+            modifyJSON = true;
+            $('#editorDiv').show();
+            $('#firstArrow').show();
         }
+    else {
+            modifyJSON = false;
+            $('#editorDiv').hide();
+            $('#firstArrow').hide();
+    }
+    
 });
 
   $('#MyButton').click(function (e) {
+    $('#MyButton').hide();
     var exportInstanceVal = $("[name='exportInstance']").val().replace(/^https?\:\/\//i, "");
     var exportUsernameVal = $("[name='exportUsername']").val();
     var exportPasswordFieldVal = $("[name='exportPasswordField']").val();
@@ -72,6 +98,8 @@ $('#dataDownload').click(function(){
     }
 
     var exportedUserDataJSON = null;
+    var exportJWT = null;
+    var importJWT = null;
 
     $.ajax({
         type: "POST",
@@ -80,7 +108,7 @@ $('#dataDownload').click(function(){
         data: jsonExportAuthData,
         contentType: "application/json",
         success: function(result){
-            var exportJWT = result.jwt;
+            exportJWT = result.jwt;
             console.log("Export JWT: " + exportJWT);
             appendToLogField("success", `Successfully got authentication from ${exportUsernameVal}@${exportInstanceVal}.`);
             $.ajax({
@@ -92,19 +120,49 @@ $('#dataDownload').click(function(){
                     //console.log(`Exported user data from ${exportUsernameVal}@${exportInstanceVal}:`);
                     appendToLogField("success", `Successfully exported user data from ${exportUsernameVal}@${exportInstanceVal}.`);
                     console.log(exportedUserDataJSON);
-                    if (transferOrDownload == 1) {
+                    if (transferOrDownload == 'download' && modifyJSON == false) {
                         exportedUserDataJSONblobby = [exportedUserDataJSON];
                         var blob1 = new Blob(exportedUserDataJSONblobby, { type: "text/plain;charset=utf-8" });
                         var url = window.URL || window.webkitURL;
                         link = url.createObjectURL(blob1);
+                        appendToLogField("success", 'Operations complete, Download initiated. Enjoy!');
                         var a = $("<a />");
                         a.attr("download", `${exportUsernameVal}@${exportInstanceVal}.json`);
                         a.attr("href", link);
                         $("body").append(a);
                         a[0].click();
                         $("body").remove(a);
-                        appendToLogField("success", 'Operations complete. Enjoy!');
-                    } else {
+                        
+                    } else if (transferOrDownload == 'download' && modifyJSON == true) {
+                        appendToLogField("success", 'Building your editor.');
+                        var editor = new JSONEditor(document.getElementById('editor_holder'),{
+                            schema: {},
+                            startval: result,
+                            theme: 'bootstrap3'
+                        });
+                        $('#submitEditor').show();
+
+                        // Hook up the submit button to log to the console
+                        document.getElementById('submitEditor').addEventListener('click',function() {
+                        // Get the value from the editor
+                        console.log(editor.getValue());
+                        exportedUserDataJSONblobby = [JSON.stringify(editor.getValue())];
+                        var blob1 = new Blob(exportedUserDataJSONblobby, { type: "text/plain;charset=utf-8" });
+                        var url = window.URL || window.webkitURL;
+                        link = url.createObjectURL(blob1);
+                        appendToLogField("success", 'Operations complete, Download initiated. Enjoy!');
+                        var a = $("<a />");
+                        a.attr("download", `${exportUsernameVal}@${exportInstanceVal}.json`);
+                        a.attr("href", link);
+                        $("body").append(a);
+                        a[0].click();
+                        $("body").remove(a);
+                        appendToLogField("success", 'Operations complete, Download initiated. Enjoy!');
+                        $('#editorDiv').hide();
+                        $('#firstArrow').hide();
+                        editor.destroy();
+                        });
+                    } else if (transferOrDownload == 'transfer' && modifyJSON == false) {
                         $.ajax({
                             type: "POST",
                             //dataType: "json",
@@ -112,7 +170,7 @@ $('#dataDownload').click(function(){
                             data: jsonImportAuthData,
                             contentType: "application/json",
                             success: function(result){
-                                var importJWT = result.jwt;
+                                importJWT = result.jwt;
                                 console.log("Import JWT: " + importJWT);
                                 appendToLogField("success", `Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
                                 $.ajax({
@@ -137,6 +195,55 @@ $('#dataDownload').click(function(){
                                 appendToLogField("error", `Couldn't authenticate to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText);
                             }       
                         });
+                    } else {
+                        appendToLogField("success", 'Building your editor.');
+                        var editor = new JSONEditor(document.getElementById('editor_holder'),{
+                            schema: {},
+                            startval: result,
+                            theme: 'bootstrap3'
+                        });
+                        $('#submitEditor').show();
+                         // Hook up the submit button to log to the console
+                         document.getElementById('submitEditor').addEventListener('click',function() {
+                                exportedUserDataJSON = JSON.stringify(editor.getValue());
+                                appendToLogField("success", 'Editing finished, importing data to target instance.');
+                                $.ajax({
+                                    type: "POST",
+                                    //dataType: "json",
+                                    url: importloginURL,
+                                    data: jsonImportAuthData,
+                                    contentType: "application/json",
+                                    success: function(result){
+                                        importJWT = result.jwt;
+                                        console.log("Import JWT: " + importJWT);
+                                        appendToLogField("success", `Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
+                                        $.ajax({
+                                            type: "POST",
+                                            url: importURL,
+                                            headers: {'Authorization': `Bearer ${importJWT}`},
+                                            contentType: "application/json",
+                                            //dataType: "json",
+                                            data: exportedUserDataJSON,
+                                            success: function(result){
+                                                appendToLogField("success", `Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
+                                                appendToLogField("success", 'Operations complete. Enjoy!');
+                                                $('#editorDiv').hide();
+                                                $('#firstArrow').hide();
+                                                editor.destroy();
+                                                
+                            
+                                            },
+                                            error: function(xhr, textStatus, errorThrown) { 
+                                                appendToLogField("error", `Couldn't import user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText); 
+                                            } 
+                                        });
+                                    },
+                                    error: function(xhr, textStatus, errorThrown) { 
+                                        appendToLogField("error", `Couldn't authenticate to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText);
+                                    }       
+                                });
+                            
+                            });
                     }
                 },
                 error: function(xhr, textStatus, errorThrown) { 

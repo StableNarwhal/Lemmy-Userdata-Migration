@@ -32,7 +32,8 @@
             <div class="panel panel-default">
               <div class="panel-body">
                 <h4>How this works:</h4> 
-                <strong>This tool exports your user data (community follows, blocklists, profile settings) and (optionally) imports them to the target account.</strong>
+                <strong>This tool exports your user data (community follows, blocklists, profile settings) and (optionally) imports them to the target account while also allowing you to modify the exported data.</strong>
+                <br>
                 <p>1. Input your instance(s), username(s), password(s) and optionally 2FA-Token(s)</p> 
                 <p>2. The clientside JavaScript code processes your inputs locally and tries to grab a special token using your provided export instance, username and password.</p>
                 <p>3. If the export token can be grabbed, it gets used to authenticate a request to grab your user data from your export instance.</p>   
@@ -43,14 +44,21 @@
           </div>
           <div class="panel panel-default">
             <div class="panel-body">
+              <p>Log:</p>
+              <div id="logField" class="col-md-8"></div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-body">
               <small>The use of this freely accessible web application is at your own risk. A guarantee or liability of any kind is expressly excluded. <br>
-                The application runs completely clientside, no data is collected by me and no cookies are set by me. <br>However, jquery 2.2.2, bootstrap 3.3.6 and font-awesome 4.5.0 are imported via a CDN.<br>
+                The application runs completely clientside, no data is collected by me and no cookies are set by me. <br>However, jquery 2.2.2, bootstrap 3.3.6,font-awesome 4.5.0 and json-editor are imported via a CDN.<br>
                 Also, due to this web application being hosted on GitHub, I have no control over what data, e.g. IP and browser fingerprint, may or may not be logged by GitHub. <br>
                 Your entered username(s), password(s) and user data is processed locally in your browser and uploaded, by your browser, to the userspecified Lemmy instances.<br> 
                 Due to the code running locally in your browser, passwords are temporarily saved and processed in cleartext by your browser.</small>
                 
               <strong>~StableNarwhal</strong>       
             </div>
+            
         </div>
       </div>
       <div class="col-md-6">
@@ -60,37 +68,53 @@
             <form class="form-horizontal" method="" action="">
               <div class="form-group">
                 <label class="col-md-4 control-label">Lemmy instance</label>
-                <div class="col-md-6">
+                <div class="col-md-8">
                   <input type="url" class="form-control" name="exportInstance" value="feddit.de">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-md-4 control-label">Username</label>
-                <div class="col-md-6">
+                <div class="col-md-8">
                   <input type="text" class="form-control" name="exportUsername" value="">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-md-4 control-label">Password</label>
-                <div class="col-md-6">
+                <div class="col-md-8">
                   <input id="exportPasswordField" type="password" class="form-control" name="exportPasswordField" value="">
                   <span toggle="#exportPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>            
               </div>
               <div class="form-group">
                 <label class="col-md-4 control-label">2FA-Token (optional)</label>
-                <div class="col-md-6">
+                <div class="col-md-8">
                   <input type="text" class="form-control" name="export2FA" value="">
                   <br>
                   <input type="checkbox" id="dataDownload" name="dataDownload">
                   <label for="dataDownload"> Only download user data</label>
                   <br>
+                  <input type="checkbox" id="modifyJSON" name="modifyJSON">
+                  <label for="modifyJSON"> Modify user data before Download/Export</label>
                 </div>
               </div>
             </form>
           </div>
       </div>
-      <img src="images/greenArrow-pointingDown.png" class="resize" id="arrow">
+      <div id="firstArrow">
+        <br>
+        <img src="images/greenArrow-pointingDown.png" class="resize" id="firstArrow">
+        <br>
+      </div>
+      <div class="col-md-12" >
+        <div class="panel panel-default" id=editorDiv>
+          <div class="panel-body">
+            <p>User data editor will appear after button was clicked.</p>
+            <div id='editor_holder'></div>
+            <button id='submitEditor'>Finish Editing</button>
+          </div>
+      </div>
+      <br>
+      <img src="images/greenArrow-pointingDown.png" class="resize" id="secondArrow">
       <br>
       <div class="panel panel-default" id="importFields">
         <div class="panel-body">
@@ -98,26 +122,26 @@
           <form class="form-horizontal" method="" action="">
             <div class="form-group">
               <label class="col-md-4 control-label">Lemmy instance</label>
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <input type="url" class="form-control" name="importInstance" value="feddit.org">
               </div>
             </div>
             <div class="form-group">
               <label class="col-md-4 control-label">Username</label>
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <input type="text" class="form-control" name="importUsername" value="">
               </div>
             </div>
             <div class="form-group">
               <label class="col-md-4 control-label">Password</label>
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <input id="importPasswordField" type="password" class="form-control" name="importPasswordField" value="">
                 <span toggle="#importPasswordField" class="fa fa-fw fa-eye field-icon toggle-password"></span>    
               </div>
             </div>
             <div class="form-group">
               <label class="col-md-4 control-label">2FA-Token (optional)</label>
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <input type="text" class="form-control" name="import2FA" value="">
               </div>
             </div>
@@ -129,18 +153,6 @@
     </div>
     </div>
   </div>      
-
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-  
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p>Log:</p>
-          <div id="logField" class="col-md-8 col-md-offset-2">          
-          </div>
-        </div>
-      </div>
-    </div>
 </div>  
 </div>
     <ul>
@@ -149,12 +161,14 @@
       <li><a href="https://jquery.com/">jQuery</a></li>
       <li><a href="https://getbootstrap.com/">Bootstrap</a></li>
       <li><a href="https://fontawesome.com">Font Awesome</a></li>
+      <li><a href="https://github.com/json-editor/json-editor">JSON Editor</a></li>
       <li><a href="https://join-lemmy.org/">Lemmy</a></li>
       <li><a href="https://github.com/StableNarwhal/LemmyInstanceMover">❤️ Sourcecode hosted on GitHub</a></li>
     </ul>
 
    <!-- Scripts: -->
    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+   <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
    <script src="js/script.js"></script> 
 </body>
 </html>

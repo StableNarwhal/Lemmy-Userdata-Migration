@@ -1,7 +1,13 @@
 
 # Lemmy Userdata Migration
 
-This web application exports your user data (community follows, blocklists, profile settings) and (optionally) imports them to the target account.
+This web application exports your user data (community follows, blocklists, profile settings) and (optionally) imports them to the target account while also allowing you to modify the exported data.
+
+# Features:
+- Export user data from any Lemmy instance (>=v0.19)
+- Download user data as a text file
+- Modify user data in the browser, e.g. to add or remove followed instances
+- Transfer user data to the target account on the target instance
 
 # Why?
 Ease of use, mostly. Some instances also have technical problems, preventing the user from using the regular Export/Import Functions in the frontend. As long as the API is still functional, so is this web application. 
