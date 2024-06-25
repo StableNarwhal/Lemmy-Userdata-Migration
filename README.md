@@ -1,12 +1,13 @@
 
-# Lemmy Instance Mover
+# Lemmy Userdata Migration
 
 This web application exports your user data (community follows, blocklists, profile settings) and (optionally) imports them to the target account.
 
+# Why?
+Ease of use, mostly. Some instances also have technical problems, preventing the user from using the regular Export/Import Functions in the frontend. As long as the API is still functional, so is this web application. 
 
-**How this works:**
 
-
+# How this works:
 
 1. Input your instance(s), username(s), password(s) and optionally 2FA-Token(s)
 
