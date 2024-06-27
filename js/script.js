@@ -51,6 +51,17 @@ $('#modifyJSON').click(function(){
     
 });
 
+
+function formatTime(number) {
+    return number < 10 ? '0' + number : number;
+}
+
+let now = new Date();
+let hours = formatTime(now.getHours());
+let minutes = formatTime(now.getMinutes());
+let seconds = formatTime(now.getSeconds());
+let ms = formatTime(now.getMilliseconds());
+
   $('#MyButton').click(function (e) {
     $('#MyButton').hide();
     var exportInstanceVal = $("[name='exportInstance']").val().replace(/^https?\:\/\//i, "");
@@ -110,7 +121,7 @@ $('#modifyJSON').click(function(){
         success: function(result){
             exportJWT = result.jwt;
             console.log("Export JWT: " + exportJWT);
-            appendToLogField("success", `Successfully got authentication from ${exportUsernameVal}@${exportInstanceVal}.`);
+            appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Successfully got authentication from ${exportUsernameVal}@${exportInstanceVal}.`);
             $.ajax({
                 url: exportURL,
                 headers: {'Authorization': `Bearer ${exportJWT}`},
@@ -118,14 +129,14 @@ $('#modifyJSON').click(function(){
                 success: function(result){
                     exportedUserDataJSON = JSON.stringify(result);
                     //console.log(`Exported user data from ${exportUsernameVal}@${exportInstanceVal}:`);
-                    appendToLogField("success", `Successfully exported user data from ${exportUsernameVal}@${exportInstanceVal}.`);
+                    appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Successfully exported user data from ${exportUsernameVal}@${exportInstanceVal}.`);
                     console.log(exportedUserDataJSON);
                     if (transferOrDownload == 'download' && modifyJSON == false) {
                         exportedUserDataJSONblobby = [exportedUserDataJSON];
                         var blob1 = new Blob(exportedUserDataJSONblobby, { type: "text/plain;charset=utf-8" });
                         var url = window.URL || window.webkitURL;
                         link = url.createObjectURL(blob1);
-                        appendToLogField("success", 'Operations complete, Download initiated. Enjoy!');
+                        appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Operations complete, Download initiated. Enjoy!`);
                         var a = $("<a />");
                         a.attr("download", `${exportUsernameVal}@${exportInstanceVal}.json`);
                         a.attr("href", link);
@@ -150,14 +161,14 @@ $('#modifyJSON').click(function(){
                         var blob1 = new Blob(exportedUserDataJSONblobby, { type: "text/plain;charset=utf-8" });
                         var url = window.URL || window.webkitURL;
                         link = url.createObjectURL(blob1);
-                        appendToLogField("success", 'Operations complete, Download initiated. Enjoy!');
+                        appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Operations complete, Download initiated. Enjoy!`);
                         var a = $("<a />");
                         a.attr("download", `${exportUsernameVal}@${exportInstanceVal}.json`);
                         a.attr("href", link);
                         $("body").append(a);
                         a[0].click();
                         $("body").remove(a);
-                        appendToLogField("success", 'Operations complete, Download initiated. Enjoy!');
+                        appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Operations complete, Download initiated. Enjoy!`);
                         $('#editorDiv').hide();
                         $('#firstArrow').hide();
                         editor.destroy();
@@ -172,7 +183,7 @@ $('#modifyJSON').click(function(){
                             success: function(result){
                                 importJWT = result.jwt;
                                 console.log("Import JWT: " + importJWT);
-                                appendToLogField("success", `Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
+                                appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
                                 $.ajax({
                                     type: "POST",
                                     url: importURL,
@@ -181,18 +192,20 @@ $('#modifyJSON').click(function(){
                                     //dataType: "json",
                                     data: exportedUserDataJSON,
                                     success: function(result){
-                                        appendToLogField("success", `Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
-                                        appendToLogField("success", 'Operations complete. Enjoy!');
+                                        appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
+                                        appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Operations complete. Enjoy!`);
                                         
                     
                                     },
                                     error: function(xhr, textStatus, errorThrown) { 
-                                        appendToLogField("error", `Couldn't import user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText); 
+                                        appendToLogField("error", `${hours}:${minutes}:${seconds}:${ms} - Couldn't import user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.responseText); 
+                                        $('#MyButton').show();
                                     } 
                                 });
                             },
                             error: function(xhr, textStatus, errorThrown) { 
-                                appendToLogField("error", `Couldn't authenticate to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText);
+                                appendToLogField("error", `${hours}:${minutes}:${seconds}:${ms} - Couldn't authenticate to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.responseText);
+                                $('#MyButton').show();
                             }       
                         });
                     } else {
@@ -206,7 +219,7 @@ $('#modifyJSON').click(function(){
                          // Hook up the submit button to log to the console
                          document.getElementById('submitEditor').addEventListener('click',function() {
                                 exportedUserDataJSON = JSON.stringify(editor.getValue());
-                                appendToLogField("success", 'Editing finished, importing data to target instance.');
+                                appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Editing finished, importing data to target instance.`);
                                 $.ajax({
                                     type: "POST",
                                     //dataType: "json",
@@ -216,7 +229,7 @@ $('#modifyJSON').click(function(){
                                     success: function(result){
                                         importJWT = result.jwt;
                                         console.log("Import JWT: " + importJWT);
-                                        appendToLogField("success", `Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
+                                        appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Successfully authenticated to ${importUsernameVal}@${importInstanceVal}.`);
                                         $.ajax({
                                             type: "POST",
                                             url: importURL,
@@ -225,8 +238,8 @@ $('#modifyJSON').click(function(){
                                             //dataType: "json",
                                             data: exportedUserDataJSON,
                                             success: function(result){
-                                                appendToLogField("success", `Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
-                                                appendToLogField("success", 'Operations complete. Enjoy!');
+                                                appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
+                                                appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Operations complete. Enjoy!`);
                                                 $('#editorDiv').hide();
                                                 $('#firstArrow').hide();
                                                 editor.destroy();
@@ -234,12 +247,14 @@ $('#modifyJSON').click(function(){
                             
                                             },
                                             error: function(xhr, textStatus, errorThrown) { 
-                                                appendToLogField("error", `Couldn't import user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText); 
+                                                appendToLogField("error", `${hours}:${minutes}:${seconds}:${ms} - Couldn't import user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.responseText); 
+                                                $('#MyButton').show();
                                             } 
                                         });
                                     },
                                     error: function(xhr, textStatus, errorThrown) { 
-                                        appendToLogField("error", `Couldn't authenticate to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText);
+                                        appendToLogField("error", `${hours}:${minutes}:${seconds}:${ms} - Couldn't authenticate to ${importUsernameVal}@${importInstanceVal}. Error - ` + xhr.status + ': ' + xhr.responseText);
+                                        $('#MyButton').show();
                                     }       
                                 });
                             
@@ -247,12 +262,14 @@ $('#modifyJSON').click(function(){
                     }
                 },
                 error: function(xhr, textStatus, errorThrown) { 
-                    appendToLogField("error", `Couldn't export user data from ${exportUsernameVal}@${exportInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText); 
+                    appendToLogField("error", `${hours}:${minutes}:${seconds}:${ms} - Couldn't export user data from ${exportUsernameVal}@${exportInstanceVal}. Error - ` + xhr.status + ': ' + xhr.responseText); 
+                    $('#MyButton').show();
                 }       
             });
         },
         error: function(xhr, textStatus, errorThrown) { 
-            appendToLogField("error", `Couldn't get authentication from ${exportUsernameVal}@${exportInstanceVal}. Error - ` + xhr.status + ': ' + xhr.statusText);
+            appendToLogField("error", `${hours}:${minutes}:${seconds}:${ms} - Couldn't get authentication from ${exportUsernameVal}@${exportInstanceVal}. Error - ` + xhr.status + ': ' + xhr.responseText);
+            $('#MyButton').show();
         }       
     });
 });

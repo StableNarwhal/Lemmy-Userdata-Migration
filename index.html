@@ -14,21 +14,20 @@
 	
 </head>
 <body>
-     <h1>Lemmy Userdata Migration</h1>
-     <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <p>⚠️ Attention: Due to CORS shenanigans your browser or a misconfigured instance may not permit some of the requests this web applications sends. If you get an error in the log, try a different browser or a (temporarily) more relaxed security setting. There isn't anything I can do about it on my end without giving up the 100% clientside approach, unfortunately. The error logs are currently very generic, I'll design those to be more informative as soon as I find the time. In the meantime, you can always check the console log (F12) to find out more about request errors.</p>         
-            </div>
-          </div>
+  <h1>Lemmy Userdata Migration</h1>
+  <div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p>⚠️ Attention: Due to CORS shenanigans your browser or a misconfigured instance may not permit some of the requests this web applications sends. If you get an error in the log, try a different browser or a (temporarily) more relaxed security setting. There isn't anything I can do about it on my end without giving up the 100% clientside approach, unfortunately. <br> You can always check the console log (F12) to find out more about request errors.</p>         
         </div>
-     </div>
-  </div>  
+      </div>
+    </div>
+  </div> 
   <div class="row">
     <div class="col-md-12">
       <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="panel panel-default">
               <div class="panel-body">
                 <h4>How this works:</h4> 
@@ -42,12 +41,7 @@
                 <strong>At this point, if the log is all green, the process is complete. You can safely close the window, your sensitive input and local user data gets deleted.</strong>
               </div>
           </div>
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <p>Log:</p>
-              <div id="logField" class="col-md-8"></div>
-            </div>
-          </div>
+          
           <div class="panel panel-default">
             <div class="panel-body">
               <small>The use of this freely accessible web application is at your own risk. A guarantee or liability of any kind is expressly excluded. <br>
@@ -61,7 +55,7 @@
             
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="panel panel-default">
           <div class="panel-body">
             <p>Instance to export settings from:</p>
@@ -154,6 +148,12 @@
     </div>
   </div>      
 </div>  
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p>Log:</p>
+    <div id="logField" class="col-md-12"></div>
+  </div>
+</div>
 </div>
     <ul>
       <li><a href="https://docs.github.com/en/site-policy">GitHub Site policy</a></li>
