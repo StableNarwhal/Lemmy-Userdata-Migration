@@ -152,6 +152,8 @@ let ms = formatTime(now.getMilliseconds());
                             theme: 'bootstrap3'
                         });
                         $('#submitEditor').show();
+                        $('#editorPlaceholder').hide();
+
 
                         // Hook up the submit button to log to the console
                         document.getElementById('submitEditor').addEventListener('click',function() {
@@ -171,6 +173,7 @@ let ms = formatTime(now.getMilliseconds());
                         appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Operations complete, Download initiated. Enjoy!`);
                         $('#editorDiv').hide();
                         $('#firstArrow').hide();
+                        $('#editorDiv').hide();
                         editor.destroy();
                         });
                     } else if (transferOrDownload == 'transfer' && modifyJSON == false) {
@@ -194,7 +197,6 @@ let ms = formatTime(now.getMilliseconds());
                                     success: function(result){
                                         appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Successfully imported user data from ${exportUsernameVal}@${exportInstanceVal} to ${importUsernameVal}@${importInstanceVal}.`);
                                         appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Operations complete. Enjoy!`);
-                                        
                     
                                     },
                                     error: function(xhr, textStatus, errorThrown) { 
@@ -216,6 +218,7 @@ let ms = formatTime(now.getMilliseconds());
                             theme: 'bootstrap3'
                         });
                         $('#submitEditor').show();
+                        $('#editorPlaceholder').hide();
                          // Hook up the submit button to log to the console
                          document.getElementById('submitEditor').addEventListener('click',function() {
                                 exportedUserDataJSON = JSON.stringify(editor.getValue());
@@ -242,6 +245,7 @@ let ms = formatTime(now.getMilliseconds());
                                                 appendToLogField("success", `${hours}:${minutes}:${seconds}:${ms} - Operations complete. Enjoy!`);
                                                 $('#editorDiv').hide();
                                                 $('#firstArrow').hide();
+                                                $('#editorDiv').hide();
                                                 editor.destroy();
                                                 
                             
