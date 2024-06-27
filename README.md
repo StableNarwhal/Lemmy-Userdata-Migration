@@ -6,7 +6,7 @@ This web application exports your user data (community follows, blocklists, prof
 # Features:
 - Export user data from any Lemmy instance (>=v0.19)
 - Download user data as a text file
-- Modify user data, e.g. to add or remove followed users/communites
+- Modify user data, e.g. to add or remove followed users/communites ([Example in Wiki](https://github.com/StableNarwhal/Lemmy-Userdata-Migration/wiki/How-to-only-export-transfer-a-part-of-my-user-data,-e.g.-blocked-instances%3F))
 - Transfer user data to the target account on the target instance
 
 # Why?
