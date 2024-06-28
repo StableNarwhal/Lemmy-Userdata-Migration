@@ -6,6 +6,7 @@ This web application exports your user data (community follows, blocklists, prof
 Hosted on GitHub: https://stablenarwhal.github.io/Lemmy-Userdata-Migration/
 
 # Features:
+- Don't trust me or GitHub? Clone the project and host it yourself or run it locally ([Example in Wiki](https://github.com/StableNarwhal/Lemmy-Userdata-Migration/wiki/How-to-run-Lemmy%E2%80%90Userdata%E2%80%90Migration-locally))
 - Export user data from any Lemmy instance (>=v0.19)
 - Download user data as a text file
 - Modify user data, e.g. to add or remove followed users/communites ([Example in Wiki](https://github.com/StableNarwhal/Lemmy-Userdata-Migration/wiki/How-to-only-export-transfer-a-part-of-my-user-data,-e.g.-blocked-instances%3F))
