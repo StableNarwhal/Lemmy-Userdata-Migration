@@ -1,7 +1,7 @@
 
 # Lemmy Userdata Migration
 
-This web application exports your user data (community follows, blocklists, profile settings) and (optionally) imports them to the target account while also allowing you to modify the exported data.
+This web application runs locally in your browser. It exports your user data (community follows, blocklists, profile settings) and (optionally) imports them to the target account while also allowing you to modify the exported data.
 
 Hosted on GitHub: https://stablenarwhal.github.io/Lemmy-Userdata-Migration/
 
